@@ -7,7 +7,8 @@ import { MovementController } from "../shared/MovementController";
 
 export const api = remultExpress({
   dataProvider: createPostgresConnection({
-    connectionString: "postgres://postgres:test@localhost/remult",
+    connectionString:
+      process.env.DATABASE_URL || "postgres://postgres:test@localhost/remult",
   }),
   entities: [User, Account, Movement],
   controllers: [MovementController],

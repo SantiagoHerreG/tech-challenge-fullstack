@@ -7,7 +7,7 @@ export const openApiDocument = {
     ...remultOpenAPI.paths,
     mypath: {
       get: {
-        tags: ["CRUD operations"],
+        tags: ["Test custom route"],
         description: "Get users",
         operationId: "getUsers",
         parameters: [
