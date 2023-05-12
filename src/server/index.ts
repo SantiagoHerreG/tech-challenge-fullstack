@@ -13,4 +13,5 @@ app.use(router);
 app.get("/api/openApi.json", (req, res) => res.json(openApiDocument));
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
 
+app.use(express.static(process.cwd() + "/dist"));
 app.listen(PORT, () => console.log("Server started, listening on:", PORT));
