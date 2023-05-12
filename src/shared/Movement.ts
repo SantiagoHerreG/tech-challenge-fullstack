@@ -1,30 +1,20 @@
-import { Entity, Fields, remult } from "remult";
+import { Entity, Fields, IdEntity, Validators, remult } from "remult";
 
 @Entity("movements", {
   allowApiCrud: true,
   allowApiDelete: false,
+  allowApiUpdate: false,
 })
-export class Movement {
-  @Fields.autoIncrement()
-  id = 0;
-
-  @Fields.number({
-    validate: (movement) => {
-      if (Number.isNaN(movement.userId) || movement.userId <= 0) {
-        throw new Error("User is not valid");
-      }
-    },
+export class Movement extends IdEntity {
+  @Fields.string({
+    validate: Validators.required,
   })
-  userId = 0;
+  userId = "";
 
-  @Fields.number({
-    validate: (movement) => {
-      if (Number.isNaN(movement.accountId) || movement.accountId <= 0) {
-        throw new Error("Account is not valid");
-      }
-    },
+  @Fields.string({
+    validate: Validators.required,
   })
-  accountId = 0;
+  accountId = "";
 
   @Fields.createdAt()
   createdAt = new Date();
@@ -32,5 +22,5 @@ export class Movement {
   @Fields.date({
     allowNull: true,
   })
-  deletedAt = null;
+  deletedAt: Date | null = null;
 }

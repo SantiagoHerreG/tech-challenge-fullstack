@@ -1,13 +1,10 @@
-import { Entity, Fields, Validators } from "remult";
+import { Entity, Fields, IdEntity, Validators } from "remult";
 import { validateEmail } from "./utils";
 
 @Entity("users", {
   allowApiCrud: true,
 })
-export class User {
-  @Fields.autoIncrement()
-  id = 0;
-
+export class User extends IdEntity {
   @Fields.string({
     validate: Validators.required,
   })
@@ -15,7 +12,7 @@ export class User {
 
   @Fields.string({
     validate: (user) => {
-      if (!validateEmail(user)) {
+      if (!validateEmail(user.email)) {
         throw new Error("Invalid email");
       }
     },
