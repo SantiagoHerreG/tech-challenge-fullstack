@@ -3,10 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "start": "tsx src/server",
+    "start": "tsc && vite build && tsc -p tsconfig.server.json && tsx src/server",
     "dev": "vite",
     "dev-node": "tsx watch src/server",
-    "start": "node dist/server/",
     "build": "tsc && vite build && tsc -p tsconfig.server.json",
     "preview": "vite preview"
   },
