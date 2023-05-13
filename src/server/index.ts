@@ -1,12 +1,17 @@
+import * as dotenv from 'dotenv'
+dotenv.config()
 import express from "express";
 import { api } from "./api";
 import swaggerUi from "swagger-ui-express";
 import { router } from "./routes";
 import { openApiDocument } from "./openApi";
+import cors from "cors";
 
 const PORT = process.env.PORT || 3002;
 
 const app = express();
+app.use(cors())
+
 app.use(api);
 app.use(router);
 

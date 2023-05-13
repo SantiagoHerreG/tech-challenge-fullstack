@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { remultExpress } from "remult/remult-express";
 import { createPostgresConnection } from "remult/postgres";
 import { User } from "../shared/User";
