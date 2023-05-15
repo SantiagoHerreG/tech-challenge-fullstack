@@ -7,7 +7,10 @@ export const errorMiddleware = (
     res: Response,
     next: NextFunction,
 ) => {
-    logger;
+    logger.log({
+        level: "error",
+        message: err.message || err.errors,
+    });
     res.status(err.status || 500).json({
         message: err.message,
         errors: err.errors,
