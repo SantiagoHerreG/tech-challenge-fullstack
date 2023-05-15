@@ -1,10 +1,18 @@
+import { API_ROOT_PATH_VERSION_1 } from "../../shared/utils";
 import { api } from "../api";
 
-const remultOpenAPI = api.openApiDoc({ title: "Tech challenge" });
+const remultOpenAPI = api.openApiDoc({ title: "Tech challenge", version: "v1" });
+const pathsObject : { [key: string]: any } = {};
+
+Object.keys(remultOpenAPI.paths).forEach((path) => {
+  const pathWithVersion = !path.includes(API_ROOT_PATH_VERSION_1) ? path?.replace("api/", API_ROOT_PATH_VERSION_1) : "";
+  return pathsObject[pathWithVersion || path] = remultOpenAPI.paths[path];
+})
+
 export const openApiDocument = {
   ...remultOpenAPI,
   paths: {
-    ...remultOpenAPI.paths,
+    ...pathsObject,
     // TODO: implement custom endpoints with the following example
     // "random-example": {
     //   get: {
