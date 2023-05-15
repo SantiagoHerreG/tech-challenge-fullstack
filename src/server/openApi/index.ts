@@ -7,7 +7,7 @@ function addVersionToURI({remultOpenAPIPaths, versionPath}: {remultOpenAPIPaths:
   const pathsObject : { [key: string]: any } = {};
 
   Object.keys(remultOpenAPIPaths).forEach((path) => {
-    const pathWithVersion = !path.includes(versionPath) ? path?.replace("api/", versionPath) : "";
+    const pathWithVersion = !path.includes(versionPath) ? path?.replace("/api", versionPath) : "";
     return pathsObject[pathWithVersion || path] = remultOpenAPI.paths[path];
   })
 
