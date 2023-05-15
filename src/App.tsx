@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import Example from './components/Example'
+import { API_ROOT_PATH_VERSION_1 } from './shared/utils'
 
 const testCors = async () => {
-  const result = await fetch("https://tech-challenge-fullstack-production.up.railway.app/api/users")
+  const result = await fetch(`https://tech-challenge-fullstack-production.up.railway.app${API_ROOT_PATH_VERSION_1}/users`)
   return result.json();
 }
 function App() {

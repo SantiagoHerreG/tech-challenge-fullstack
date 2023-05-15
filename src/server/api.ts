@@ -6,6 +6,7 @@ import { User } from "../shared/User";
 import { Account } from "../shared/Account";
 import { Movement } from "../shared/Movement";
 import { MovementController } from "../shared/MovementController";
+import { API_ROOT_PATH_VERSION_1 } from '../shared/utils';
 
 export const api = remultExpress({
   dataProvider: createPostgresConnection({
@@ -14,4 +15,5 @@ export const api = remultExpress({
   }),
   entities: [User, Account, Movement],
   controllers: [MovementController],
+  rootPath: API_ROOT_PATH_VERSION_1
 });
