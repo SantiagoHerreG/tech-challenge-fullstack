@@ -9,7 +9,7 @@ export const errorMiddleware = (
 ) => {
     logger.log({
         level: "error",
-        message: err.message || err.errors,
+        message: err.message || String(err.errors),
     });
     res.status(err.status || 500).json({
         message: err.message,

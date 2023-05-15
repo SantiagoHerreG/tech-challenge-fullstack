@@ -8,6 +8,7 @@ import { openApiDocument } from "./openApi";
 import cors from "cors";
 import { API_ROOT_PATH_VERSION_1 } from "../shared/utils";
 import { errorMiddleware } from "./middlewares/error.middleware";
+import { notFoundMiddleware } from "./middlewares/notFound.middleware";
 
 const PORT = process.env.PORT || 3002;
 
@@ -27,6 +28,8 @@ app.use(
 );
 
 app.use(express.static(process.cwd() + "/dist"));
+
 app.use(errorMiddleware);
+app.use(notFoundMiddleware);
 
 app.listen(PORT, () => console.log("Server started, listening on:", PORT));
