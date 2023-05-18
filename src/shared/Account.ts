@@ -1,9 +1,9 @@
-import { Entity, Fields, IdEntity, Validators, ValueFilter } from "remult";
+import { Entity, Fields, IdEntity, Validators } from "remult";
 import { Movement } from "./Movement";
 import { User } from "./User";
 
 @Entity("accounts", {
-    allowApiCrud: true,
+    allowApiCrud: ["superadmin", "admin"],
 })
 export class Account extends IdEntity {
     @Fields.string({
@@ -15,6 +15,11 @@ export class Account extends IdEntity {
         validate: Validators.required,
     })
     clientName = "";
+
+    @Fields.string({
+        validate: Validators.required,
+    })
+    personResponsibleForOperation = "";
 
     @Fields.object<Account>((options, remult) => {
         options.serverExpression = async (acc) => {
@@ -37,12 +42,17 @@ export class Account extends IdEntity {
             }
             return usersInAcc;
         };
+        options.allowApiUpdate = false;
     })
     users: User[] = [];
 
-    @Fields.createdAt()
+    @Fields.createdAt({
+        allowApiUpdate: false,
+    })
     createdAt = new Date();
 
-    @Fields.updatedAt()
+    @Fields.updatedAt({
+        allowApiUpdate: false,
+    })
     updatedAt = new Date();
 }

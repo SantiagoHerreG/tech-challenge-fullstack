@@ -1,4 +1,4 @@
-import express, { Router } from "express";
+import { Router } from "express";
 import { MovementController } from "../../shared/MovementController";
 import { api } from "../api";
 import { API_ROOT_PATH_VERSION_1 } from "../../shared/utils";

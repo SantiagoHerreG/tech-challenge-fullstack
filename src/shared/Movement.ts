@@ -1,9 +1,7 @@
 import { Entity, Fields, IdEntity, Validators, remult } from "remult";
 
 @Entity("movements", {
-    allowApiCrud: true,
-    allowApiDelete: false,
-    allowApiUpdate: false,
+    allowApiCrud: ["superadmin", "admin"],
 })
 export class Movement extends IdEntity {
     @Fields.string({
@@ -16,7 +14,9 @@ export class Movement extends IdEntity {
     })
     accountId = "";
 
-    @Fields.createdAt()
+    @Fields.createdAt({
+        allowApiUpdate: false,
+    })
     createdAt = new Date();
 
     @Fields.date({

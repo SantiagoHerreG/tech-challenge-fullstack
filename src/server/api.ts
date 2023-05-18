@@ -7,6 +7,7 @@ import { Account } from "../shared/Account";
 import { Movement } from "../shared/Movement";
 import { MovementController } from "../shared/MovementController";
 import { API_ROOT_PATH_VERSION_1 } from "../shared/utils";
+import { getUserForRemult } from "./auth";
 
 export const api = remultExpress({
     rootPath: API_ROOT_PATH_VERSION_1,
@@ -18,4 +19,5 @@ export const api = remultExpress({
     entities: [User, Account, Movement],
     controllers: [MovementController],
     initApi: seed,
+    getUser: (request: any) => getUserForRemult(request),
 });

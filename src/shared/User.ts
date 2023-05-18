@@ -1,8 +1,31 @@
-import { Allow, Entity, Fields, IdEntity, Validators, remult } from "remult";
+import { Entity, Fields, IdEntity, Validators, remult } from "remult";
 import { validateEmail } from "./utils";
+import * as bcrypt from "bcrypt";
+import {
+    isUserAuthorizedToUpdate,
+    usersApiAuthorization,
+} from "../server/utils/authorizationByRole.utils";
 
-@Entity("users", {
-    allowApiCrud: true,
+@Entity<User>("users", {
+    allowApiRead: ["superadmin", "admin"],
+    allowApiInsert: (entity, c) => usersApiAuthorization(entity, c),
+    allowApiDelete: (entity, c) => usersApiAuthorization(entity, c),
+    allowApiUpdate: (entity, c) =>
+        usersApiAuthorization(entity, c) || isUserAuthorizedToUpdate(entity, c),
+    saving: async (entity) => {
+        const usersWithSameEmail = await remult
+            .repo(User)
+            .find({ where: { email: entity.email } });
+        for (let user of usersWithSameEmail) {
+            if (user.id !== entity.id) {
+                throw new Error("User email is already registered");
+            }
+        }
+
+        if (entity.password) {
+            entity.password = await bcrypt.hash(entity.password, 10);
+        }
+    },
 })
 export class User extends IdEntity {
     @Fields.string({
@@ -11,13 +34,12 @@ export class User extends IdEntity {
     name = "";
 
     @Fields.string({
-        validate: (user) => {
+        validate: async (user) => {
             if (!validateEmail(user.email)) {
                 throw new Error("Invalid email");
             }
         },
-        // TODO: handle with auth
-        // allowApiUpdate: ["admin"]
+        allowApiUpdate: ["superadmin"],
     })
     email = "";
 
@@ -35,10 +57,14 @@ export class User extends IdEntity {
     @Fields.string()
     knowledge = "";
 
-    @Fields.createdAt()
+    @Fields.createdAt({
+        allowApiUpdate: false,
+    })
     createdAt = new Date();
 
-    @Fields.updatedAt()
+    @Fields.updatedAt({
+        allowApiUpdate: false,
+    })
     updatedAt = new Date();
 
     @Fields.string({
@@ -50,8 +76,6 @@ export class User extends IdEntity {
                 throw new Error("Role is not valid");
             }
         },
-        // TODO add auth
-        // allowApiUpdate: ["admin"]
     })
     role = "user";
 }
