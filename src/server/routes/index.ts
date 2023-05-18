@@ -9,7 +9,6 @@ router.post(
     api.withRemult,
     async (req, res) => {
         const { userId, accountId } = req.body;
-        console.log({ userId, accountId });
 
         try {
             res.status(200).json(

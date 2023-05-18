@@ -1,3 +1,6 @@
+import { Account } from "./Account";
+import { User } from "./User";
+
 export const validateEmail = (email: string) => {
     return String(email)
         .toLowerCase()
@@ -7,3 +10,10 @@ export const validateEmail = (email: string) => {
 };
 
 export const API_ROOT_PATH_VERSION_1 = "/api/v1";
+
+export type MovementDetailed = {
+    user: User;
+    account: Account;
+    createdAt: Date;
+    deletedAt: Date | null;
+};
