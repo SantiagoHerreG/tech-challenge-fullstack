@@ -12,6 +12,7 @@ export const validateEmail = (email: string) => {
 export const API_ROOT_PATH_VERSION_1 = "/api/v1";
 
 export type MovementDetailed = {
+    id: string;
     user: User;
     account: Account;
     createdAt: Date;

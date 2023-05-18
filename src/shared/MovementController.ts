@@ -49,6 +49,7 @@ export class MovementController {
                 continue;
             }
             result.push({
+                id: elem.id,
                 user,
                 account,
                 createdAt: elem.createdAt,
