@@ -16,13 +16,21 @@ import {
         const usersWithSameEmail = await remult
             .repo(User)
             .find({ where: { email: entity.email } });
-        for (let user of usersWithSameEmail) {
-            if (user.id !== entity.id) {
-                throw new Error("User email is already registered");
-            }
+
+        if (usersWithSameEmail.length > 1) {
+            throw new Error("Unexpected server error");
         }
 
-        if (entity.password) {
+        if (usersWithSameEmail.length) {
+            const userInDatabase = usersWithSameEmail[0];
+            if (userInDatabase.id !== entity.id) {
+                throw new Error("User email is already registered");
+            }
+            entity.password =
+                entity.password !== userInDatabase.password
+                    ? await bcrypt.hash(entity.password, 10)
+                    : userInDatabase.password;
+        } else {
             entity.password = await bcrypt.hash(entity.password, 10);
         }
     },
@@ -39,7 +47,6 @@ export class User extends IdEntity {
                 throw new Error("Invalid email");
             }
         },
-        allowApiUpdate: ["superadmin"],
     })
     email = "";
 

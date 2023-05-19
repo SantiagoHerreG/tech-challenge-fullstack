@@ -1,0 +1,9 @@
+node_modules
+build
+.dockerignore
+Dockerfile
+logs
+dist
+src/**/*.test.ts
+.vscode
+README.md
