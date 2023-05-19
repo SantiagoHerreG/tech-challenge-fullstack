@@ -12,7 +12,10 @@ export const isAdminAuthorizedForUsersApi = (
 export const isUserAuthorizedToUpdate = (
     entity: User | undefined,
     c: Remult | undefined,
-) => entity?.id === c?.user?.id && entity?.role === "user";
+) =>
+    entity?.id === c?.user?.id &&
+    entity?.role === "user" &&
+    entity.email === c?.user?.email;
 
 export const usersApiAuthorization = (
     entity: User | undefined,

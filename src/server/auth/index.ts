@@ -5,6 +5,12 @@ import { logger } from "../logger";
 import { User } from "../../shared/User";
 import { UserInfo } from "remult";
 
+declare module "remult" {
+    export interface UserInfo {
+        email: string;
+    }
+}
+
 export const generateAccessToken = function (user: User) {
     if (!process.env.TOKEN_SECRET) {
         throw new Error("Unexpected server error");
@@ -46,6 +52,7 @@ export const getUserForRemult = (request: any) => {
         id: request.user.id,
         roles: [request.user.role],
         name: request.user.name,
+        email: request.user.email,
     };
     return Promise.resolve(userInfo);
 };
