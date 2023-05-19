@@ -7,11 +7,11 @@ import {
 } from "../server/utils/authorizationByRole.utils";
 
 @Entity<User>("users", {
-    allowApiRead: ["superadmin", "admin"],
-    allowApiInsert: (entity, c) => usersApiAuthorization(entity, c),
-    allowApiDelete: (entity, c) => usersApiAuthorization(entity, c),
-    allowApiUpdate: (entity, c) =>
-        usersApiAuthorization(entity, c) || isUserAuthorizedToUpdate(entity, c),
+    // allowApiRead: true,
+    // allowApiInsert: (entity, c) => usersApiAuthorization(entity, c),
+    // allowApiDelete: (entity, c) => usersApiAuthorization(entity, c),
+    // allowApiUpdate: (entity, c) =>
+    //     usersApiAuthorization(entity, c) || isUserAuthorizedToUpdate(entity, c),
     saving: async (entity) => {
         const usersWithSameEmail = await remult
             .repo(User)

@@ -1,29 +1,50 @@
-import { useEffect, useState } from "react";
-import "./App.css";
-import Example from "./components/Example";
-import { API_ROOT_PATH_VERSION_1 } from "./shared/utils";
+import { useCallback, useState } from "react";
+import { Outlet } from "react-router-dom";
+import Footer from "./SharedModule/Footer/Footer";
+import Header from "./SharedModule/Header/Header";
+import { Box, ThemeProvider } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import GlobalContextProvider from "./contexts/GlobalContextProvider";
+import AuthHandler from "./auth/AuthHandler";
+import { EThemeMode } from "./utils/types";
+import {
+    getLocalModeOrDefault,
+    setLocalMode,
+} from "./services/localStorageService/localStorageService";
+import { themeFactory } from "./utils/UiThemeUtils";
 
-const testCors = async () => {
-    const result = await fetch(
-        `https://tech-challenge-fullstack-production.up.railway.app${API_ROOT_PATH_VERSION_1}/users`,
+export default function App() {
+    const [mode, setMode] = useState<EThemeMode>(getLocalModeOrDefault());
+    const theme = themeFactory(mode);
+
+    const setThemeMode = useCallback(
+        (newMode: EThemeMode) => {
+            if (newMode !== mode) {
+                setMode(newMode);
+                setLocalMode(newMode);
+            }
+        },
+        [mode],
     );
-    return result.json();
-};
-function App() {
-    const [users, setUsers] = useState([]);
-
-    useEffect(() => {
-        testCors().then((res) => setUsers(res));
-    }, []);
 
     return (
-        <div className="App">
-            <Example />
-            {users?.map((us) => (
-                <div>{us}</div>
-            ))}
-        </div>
+        <GlobalContextProvider>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <AuthHandler>
+                    <Box
+                        minHeight="100vh"
+                        display="flex"
+                        flexDirection="column"
+                    >
+                        <Header themeMode={mode} setThemeMode={setThemeMode} />
+                        <main>
+                            <Outlet />
+                        </main>
+                        <Footer />
+                    </Box>
+                </AuthHandler>
+            </ThemeProvider>
+        </GlobalContextProvider>
     );
 }
-
-export default App;

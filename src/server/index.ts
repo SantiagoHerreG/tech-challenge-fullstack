@@ -19,6 +19,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use(express.static(process.cwd() + "/dist"));
+
 app.get(`${API_ROOT_PATH_VERSION_1}/openApi.json`, (req, res) =>
     res.json(openApiDocument),
 );
@@ -29,7 +31,7 @@ app.use(
 );
 app.use(authRouter);
 app.use(logInfo);
-app.use(authenticateToken);
+// app.use(authenticateToken);
 app.use(api);
 app.use(router);
 

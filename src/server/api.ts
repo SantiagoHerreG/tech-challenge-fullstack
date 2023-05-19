@@ -10,7 +10,7 @@ import { API_ROOT_PATH_VERSION_1 } from "../shared/utils";
 import { getUserForRemult } from "./auth";
 
 export const api = remultExpress({
-    rootPath: API_ROOT_PATH_VERSION_1,
+    // rootPath: API_ROOT_PATH_VERSION_1,
     dataProvider: createPostgresConnection({
         connectionString:
             process.env.DATABASE_URL ||
